@@ -33,8 +33,8 @@ Ensure you have the following installed:
 - Flutter SDK (for a Flutter-based mobile or web app)
 
 ## Deployment
-Running Locally
-To get FitLog up and running on your local machine for development and testing purposes, follow these steps:
+FitLog is designed to be scalable and deployable on various cloud platforms such as AWS, Google Cloud, or Azure.
+To get FitLog up and running on your local machine, follow these steps:
 
 ### Installation
 
@@ -52,6 +52,3 @@ To get FitLog up and running on your local machine for development and testing p
    npm start
    ```
 This will start the server at http://localhost:3000
-
-Deployment
-FitLog is designed to be scalable and deployable on various cloud platforms such as AWS, Google Cloud, or Azure
