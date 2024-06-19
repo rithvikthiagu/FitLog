@@ -1,4 +1,4 @@
-#FitLog
+# FitLog
 FitLog is a comprehensive fitness tracking application that enables users to monitor and plan their exercise routines effectively. Designed to accommodate both novice enthusiasts and professional athletes, FitLog offers a range of tools to enhance your fitness experience and help you achieve your health goals.
 
 Features
