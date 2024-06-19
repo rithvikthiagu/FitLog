@@ -24,7 +24,6 @@ FitLog is a comprehensive fitness tracking application that enables users to mon
 - Personalization: Customize user profiles with fitness levels, preferred activities, and personal health metrics.
 
 ## Installation
-- To get FitLog up and running on your local machine for development and testing purposes, follow these steps:
 
 ### Prerequisites
 Ensure you have the following installed:
