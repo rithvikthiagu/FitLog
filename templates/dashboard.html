@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLog Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to FitLog</h1>
+        <div class="form-container">
+            <div class="form-section">
+                <h2>Exercises</h2>
+                <a href="/exercises" class="nav-button">Go to Exercises</a>
+            </div>
+            <div class="form-section">
+                <h2>Routines</h2>
+                <a href="/routines" class="nav-button">Go to Routines</a>
+            </div>
+            <div class="form-section">
+                <h2>Workout Log</h2>
+                <a href="/workout_log" class="nav-button">Go to Workout Log</a>
+            </div>
+            <div class="form-section">
+                <h2>Workout Report</h2>
+                <a href="{{ url_for('workout_log_report') }}" class="nav-button">Go to Workout Report</a>
+            </div>
+            <div class="form-section" style="flex-basis: 100%; text-align: center;">
+                <a href="{{ url_for('login') }}" class="back-btn">Log Out</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

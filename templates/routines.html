@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Routines | FitLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        <h1>Routine Management</h1>
+
+        <div class="form-container">
+            <h2>Create New Routine</h2>
+            <form method="POST" action="/routines">
+                <div class="form-group">
+                    <label for="routine_name">Routine Name:</label>
+                    <input type="text" id="routine_name" name="routine_name" placeholder="Enter Routine Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exercises">Select Exercises:</label>
+                    <select id="exercises" name="exercises[]" multiple required>
+                        <option value="all">Select All</option>
+                        {% for exercise in exercises %}
+                        <option value="{{ exercise.exercise_id }}">{{ exercise.exercise_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn">Create Routine</button>
+            </form>
+        </div>
+
+        <div class="list-container">
+            <h2>Existing Routines</h2>
+            <ul>
+                {% for routine in routines %}
+                <li>
+                    <div style="display: flex; justify-content: space-between; align-items: center; text-size-adjust: 10px;">
+                        <span style="flex-grow: 1;" onclick="showExercises('{{ routine.routine_id }}')">
+                            {{ routine.routine_name }}
+                        </span>
+                        <form action="{{ url_for('delete_routine', routine_id=routine.routine_id) }}" method="post" style="margin-left: 10px;">
+                            <button type="submit" class="btn-delete" onclick="event.stopPropagation();">Delete</button>
+                        </form>
+                    </div>
+                    <div id="exercises-{{ routine.routine_id }}" class="exercises-list">
+                        <ul>
+                            {% for exercise in routine.exercises %}
+                            <li>{{ exercise.exercise_name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showExercises(routineId) {
+            var exercisesList = document.getElementById('exercises-' + routineId);
+            var isDisplayed = exercisesList.style.display === 'block';
+            exercisesList.style.display = isDisplayed ? 'none' : 'block';
+        }
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+\<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Log Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var routineSelect = document.getElementById('routine');
+            routineSelect.addEventListener('change', function() {
+                var routineId = this.value;
+                if (routineId) {
+                    fetch('/get_exercises/' + routineId)
+                        .then(response => response.json())
+                        .then(data => {
+                            var exerciseSelect = document.getElementById('exercise');
+                            exerciseSelect.innerHTML = ''; // Clear existing options
+                            data.forEach(function(exercise) {
+                                var option = document.createElement('option');
+                                option.value = exercise.id;
+                                option.text = exercise.name;
+                                exerciseSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Error:', error));
+                } else {
+                    // Clear the exercise dropdown if no routine is selected
+                    document.getElementById('exercise').innerHTML = '';
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Workout Log Management</h1>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+
+        <div class="form-container">
+            <form method="POST" action="/workout_log">
+                <!-- Date and Routine in one row -->
+                <div class="row">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group" style="margin-right: -90%;">
+                        <label for="routine">Routine:</label>
+                        <select id="routine" name="routine" required>
+                            <option value="">Select a routine</option>
+                            {% for routine in routines %}
+                                <option value="{{ routine.routine_id }}">{{ routine.routine_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+        
+                <!-- Exercise and Sets in one row -->
+                <div class="row">
+                    <div class="form-group">
+                        <label for="exercise">Exercise:</label>
+                        <select id="exercise" name="exercise" required>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-right: -90%;">
+                        <label for="sets">Sets:</label>
+                        <input type="number" id="sets" name="sets">
+                    </div>
+                </div>
+        
+                <!-- Reps and Weight in one row -->
+                <div class="row">
+                    <div class="form-group">
+                        <label for="reps">Reps:</label>
+                        <input type="number" id="reps" name="reps">
+                    </div>
+                    <div class="form-group" style="margin-right: -90%;">
+                        <label for="weight">Weight:</label>
+                        <input type="number" id="weight" name="weight">
+                    </div>
+                </div>
+        
+                <!-- Distance and Time in one row -->
+                <div class="row">
+                    <div class="form-group">
+                        <label for="distance">Distance:</label>
+                        <input type="number" id="distance" name="distance">
+                    </div>
+                    <div class="form-group" style="margin-right: -90%;">
+                        <label for="time">Time (min):</label>
+                        <input type="number" id="time" name="time">
+                    </div>
+                </div>
+                <div class="button-wrapper">
+                    <button type="submit" class="btn">Add New Log Entry</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="log-container table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Routine</th>
+                        <th>Exercise</th>
+                        <th>Sets</th>
+                        <th>Reps</th>
+                        <th>Weight</th>
+                        <th>Distance</th>
+                        <th>Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in log_entries %}
+                        <tr>
+                            <td>{{ entry.date }}</td>
+                            <td>{{ entry.routine.routine_name }}</td>
+                            <td>{{ entry.exercise.exercise_name }}</td>
+                            <td>{{ entry.sets }}</td>
+                            <td>{{ entry.reps }}</td>
+                            <td>{{ entry.weight }}</td>
+                            <td>{{ entry.distance }}</td>
+                            <td>{{ entry.time }}</td>
+                            <td>
+                                <a href="/edit_log/{{ entry.log_id }}" class="btn-ed">Edit</a>
+                                <form method="POST" action="/delete_log/{{ entry.log_id }}" style="display:inline-block;">
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

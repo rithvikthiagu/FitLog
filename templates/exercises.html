@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercises | FitLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        <h1>Exercise Management</h1>
+
+        <div class="form-container">
+            <h2>Add New Exercise</h2>
+            <form method="POST" action="/exercises">
+                <div class="form-group">
+                    <label for="exercise_name">Exercise Name:</label>
+                    <input type="text" id="exercise_name" name="exercise_name" placeholder="Enter Exercise Name" required>
+                </div>
+                <button type="submit" class="btn">Add Exercise</button>
+            </form>
+        </div>
+
+        <div class="list-container">
+            <h2>Existing Exercises</h2>
+            <div style="max-height: 300px; overflow-y: auto;">
+                <ul>
+                    {% for exercise in exercises %}
+                    <li>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="flex-grow: 1;">
+                                {{ exercise.exercise_name }}
+                            </span>
+                            <form action="{{ url_for('delete_exercise', exercise_id=exercise.exercise_id) }}" method="post" style="margin-left: 10px;">
+                                <button type="submit" class="btn-delete" onclick="event.stopPropagation();">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

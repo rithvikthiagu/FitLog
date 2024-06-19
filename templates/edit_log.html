@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Log Entry</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('workout_log') }}" class="btn btn-secondary">Back to Workout Log</a>
+        <h1>Edit Log Entry</h1>
+
+        <div class="form-container">
+            <form method="POST" action="/edit_log/{{ log_entry.log_id }}">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" value="{{ log_entry.date }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="routine">Routine:</label>
+                        <select id="routine" name="routine" required>
+                            {% for routine in routines %}
+                            <option value="{{ routine.routine_id }}" {% if log_entry.routine_id == routine.routine_id %}selected{% endif %}>{{ routine.routine_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group">
+                        <label for="exercise">Exercise:</label>
+                        <select id="exercise" name="exercise" required>
+                            {% for exercise in exercises %}
+                            <option value="{{ exercise.exercise_id }}" {% if log_entry.exercise_id == exercise.exercise_id %}selected{% endif %}>{{ exercise.exercise_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sets">Sets:</label>
+                        <input type="number" id="sets" name="sets" value="{{ log_entry.sets }}" required>
+                    </div>
+                </div>
+                <div class = row>
+                    <div class="form-group">
+                        <label for="reps">Reps:</label>
+                        <input type="number" id="reps" name="reps" value="{{ log_entry.reps }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Weight:</label>
+                        <input type="number" id="weight" name="weight" value="{{ log_entry.weight }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="distance">Distance:</label>
+                        <input type="number" id="distance" name="distance" value="{{ log_entry.distance }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time (min):</label>
+                        <input type="number" id="time" name="time" value="{{ log_entry.time }}">
+                    </div>
+                </div>
+                <div style="margin-right: -200"> 
+                    <button type="submit" class="btn">Save Changes</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</body>
+</html>

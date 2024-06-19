@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Log Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var routineSelect = document.getElementById('routine');
+            routineSelect.addEventListener('change', function() {
+                var routineId = this.value;
+                if (routineId) {
+                    fetch('/get_exercises/' + routineId)
+                        .then(response => response.json())
+                        .then(data => {
+                            var exerciseSelect = document.getElementById('exercise');
+                            exerciseSelect.innerHTML = ''; // Clear existing options
+                            data.forEach(function(exercise) {
+                                var option = document.createElement('option');
+                                option.value = exercise.id;
+                                option.text = exercise.name;
+                                exerciseSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Error:', error));
+                } else {
+                    // Clear the exercise dropdown if no routine is selected
+                    document.getElementById('exercise').innerHTML = '';
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        <h1>Workout Log Report</h1>
+        
+        <!-- Filter Options -->
+        <div class="form-container">
+            <h2>Filter Options</h2>
+            <form method="POST" action="{{ url_for('workout_log_report') }}">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" id="start_date" name="start_date">
+                    </div>
+                    <div class="form-group" style="margin-right: -20%;">
+                        <label for="end_date">End Date:</label>
+                        <input type="date" id="end_date" name="end_date"> 
+                    </div>  
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="sets">Sets:</label>
+                        <input type="text" id="sets" name="sets">
+                    </div>
+                    <div class="form-group" style="margin-right: -20%;">
+                        <label for="reps">Reps:</label>
+                        <input type="text" id="reps" name="reps">
+                    </div>                   
+                </div>
+                
+                <div class="row">
+                    <div class="form-group">
+                        <label for="weight">Weight:</label>
+                        <input type="text" id="weight" name="weight">
+                    </div>
+                    <div class="form-group" style="margin-right: -20%;">
+                        <label for="distance">Distance:</label>
+                        <input type="text" id="distance" name="distance">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group" style="margin-right: -30%;">
+                        <label for="time">Time:</label>
+                        <input type="text" id="time" name="time">
+                    </div>
+                </div>
+                <button type="submit" class="btn">Apply Filters</button>
+            </form>
+        </div>
+        
+        <!-- Filtered Log Entries -->
+        {% if filtered_logs %}
+        <h2 style="color: white;">Filtered Workout Log Entries</h2>
+        <div class="form-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Sets</th>
+                        <th>Reps</th>
+                        <th>Weight</th>
+                        <th>Distance</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in filtered_logs %}
+                        <tr>
+                            <td>{{ log.date }}</td>
+                            <td>{{ log.sets }}</td>
+                            <td>{{ log.reps }}</td>
+                            <td>{{ log.weight }}</td>
+                            <td>{{ log.distance }}</td>
+                            <td>{{ log.time }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- Average Statistics -->
+        {% if average_time is not none or average_sets is not none or average_reps is not none or average_weight is not none or average_distance is not none %}
+        <h2 style="color: white;">Average Statistics</h2>
+        <div class="form-container">
+            <div>
+                {% if average_time is not none %}
+                    <p>Average Time: {{ average_time }} minutes</p>
+                {% endif %}
+                {% if average_sets is not none %}
+                    <p>Average Sets: {{ average_sets }}</p>
+                {% endif %}
+                {% if average_reps is not none %}
+                    <p>Average Reps: {{ average_reps }}</p>
+                {% endif %}
+                {% if average_weight is not none %}
+                    <p>Average Weight Lifted: {{ average_weight }} lbs</p>
+                {% endif %}
+                {% if average_distance is not none %}
+                    <p>Average Distance: {{ average_distance }} miles</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
