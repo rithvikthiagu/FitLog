@@ -4,8 +4,8 @@ FitLog is a comprehensive fitness tracking application that enables users to mon
 ## Features
 
 # Exercise Tracking
--Customizable Logs: Record every detail of your workouts, including type of exercise, number of sets and reps, weights lifted, and duration of exercise.
--Exercise Database: Access a wide range of predefined exercises or add your own custom exercises to the database.
+- Customizable Logs: Record every detail of your workouts, including type of exercise, number of sets and reps, weights lifted, and duration of exercise.
+- Exercise Database: Access a wide range of predefined exercises or add your own custom exercises to the database.
 
 # Routine Management
 Routine Builder: Create personalized workout routines by combining different exercises. Save and modify these routines as needed.
